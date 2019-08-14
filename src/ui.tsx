@@ -36,7 +36,7 @@ const App = () => {
     parent.postMessage({ pluginMessage: { state: "TRIGGER_CHANGES" } }, "*");
   };
 
-  const setData = (updatedPages: Pages, state: keyof typeof MessageState) => {
+  const setData = (updatedPages: Pages, state: MessageState) => {
     parent.postMessage({ pluginMessage: { state, data: updatedPages } }, "*");
     setPages(updatedPages);
   };
