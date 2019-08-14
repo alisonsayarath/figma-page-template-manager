@@ -49,6 +49,10 @@ const App = () => {
     setData(updatedPages);
   };
 
+  const onCreatePage = () => {
+    setData(pages.concat({ id: pages.length + 1, name: "" }));
+  };
+
   return (
     <>
       <div>
@@ -61,7 +65,11 @@ const App = () => {
               onDelete={onDeletePage}
             />
           ))}
-        <button className="button button--primary" id="create">
+        <button
+          className="button button--primary"
+          id="create"
+          onClick={onCreatePage}
+        >
           Create a new page
         </button>
       </div>
