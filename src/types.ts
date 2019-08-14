@@ -1,2 +1,2 @@
-export type Page = { name: string };
+export type Page = { id: number; name: string };
 export type FigmaDocument = Page[];

@@ -319,3 +319,8 @@ body {
   text-align: center;
   margin: 20px;
 }
+
+.field {
+  display: flex;
+  margin-bottom: 1rem;
+}

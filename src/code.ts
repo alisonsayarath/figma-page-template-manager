@@ -17,9 +17,9 @@ const setCurrentPage = (page: PageNode) => (figma.currentPage = page);
 // renamePage(doc.children[2] as PageNode, "🏗V1");
 
 const Mock: FigmaDocument = [
-  { name: "Component" },
-  { name: "_________________" },
-  { name: "V1" }
+  { id: 1, name: "Component" },
+  { id: 2, name: "_________________" },
+  { id: 3, name: "V1" }
 ];
 
 figma.showUI(__html__, { width: 600, height: 310 });
@@ -30,4 +30,4 @@ ui.postMessage(Mock);
 // setCurrentPage(doc.children[1]);
 // figma.viewport.scrollAndZoomIntoView(nodes);
 
-figma.closePlugin();
+// figma.closePlugin();
