@@ -62,11 +62,24 @@ const App = () => {
 
   const onDeletePage = (pageId: PageId) => {
     const updatedPages = pages.filter(p => p.id !== pageId);
-    setData(updatedPages, "PAGE_DELETED");
+    parent.postMessage(
+      {
+        pluginMessage: {
+          state: "PAGE_DELETED",
+          data: { id: pageId },
+          pages: updatedPages
+        }
+      },
+      "*"
+    );
+    setPages(updatedPages);
+
+    // setData(updatedPages, "PAGE_DELETED");
   };
 
   const onCreatePage = () => {
     // setData(pages.concat({ id: pages.length + 1, name: "V3" }), "PAGE_CREATED");
+    parent.postMessage({ pluginMessage: { state: "PAGE_CREATED" } }, "*");
   };
 
   return (
