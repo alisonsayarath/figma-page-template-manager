@@ -23,15 +23,35 @@ const triggerChanges = () => {
 
 ui.onmessage = message => {
   switch (message.state) {
+    case "PAGE_RENAMED":
+      const page = doc.children.filter(p => p.id == message.data.id);
+      renamePage(page[0] as PageNode, message.data.name);
+      break;
     case "TRIGGER_CHANGES":
       triggerChanges();
+      break;
     case "PAGE_CREATED":
-      console.log(message.data);
+      const newPagesNames = message.data
+        .slice(doc.children.length)
+        .map(p => p.name);
+      for (let i = 0; i < newPagesNames.length; i++) {
+        createPage();
+        renamePage(
+          doc.children[doc.children.length - 1] as PageNode,
+          newPagesNames[i]
+        );
+      }
+      break;
   }
-  // cs.setAsync("pages", message);
+  cs.setAsync("pages", message.pages);
 };
 
 figma.showUI(__html__, { width: 600, height: 310 });
+// const yo = [
+//   { id: "0:1", name: "Component" },
+//   { id: "7:64", name: "__________" }
+// ];
+
 cs.getAsync("pages").then(asyncPages => ui.postMessage(asyncPages));
 
 // createPage();

@@ -45,7 +45,19 @@ const App = () => {
     const updatedPages = pages.map(p =>
       p.id == pageId ? { id: pageId, name: value } : p
     );
-    setData(updatedPages, "PAGE_RENAMED");
+
+    parent.postMessage(
+      {
+        pluginMessage: {
+          state: "PAGE_RENAMED",
+          data: { id: pageId, name: value },
+          pages: updatedPages
+        }
+      },
+      "*"
+    );
+    setPages(updatedPages);
+    // setData(updatedPages, "PAGE_RENAMED");
   };
 
   const onDeletePage = (pageId: PageId) => {
@@ -54,7 +66,7 @@ const App = () => {
   };
 
   const onCreatePage = () => {
-    setData(pages.concat({ id: pages.length + 1, name: "" }), "PAGE_CREATED");
+    // setData(pages.concat({ id: pages.length + 1, name: "V3" }), "PAGE_CREATED");
   };
 
   return (
