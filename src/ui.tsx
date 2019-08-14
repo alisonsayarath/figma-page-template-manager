@@ -2,7 +2,7 @@ import * as React from "react";
 import { useState } from "react";
 import * as ReactDOM from "react-dom";
 
-import { Pages } from "./types";
+import { Pages, PageId, PageName } from "./types";
 import "./ui.css";
 
 const PageField = ({ page, onChange, onDelete }) => {
@@ -37,14 +37,14 @@ const App = () => {
     setPages(updatedPages);
   };
 
-  const onChangeName = (pageId, value: string) => {
+  const onChangeName = (pageId: PageId, value: PageName) => {
     const updatedPages = pages.map(p =>
       p.id == pageId ? { id: pageId, name: value } : p
     );
     setData(updatedPages);
   };
 
-  const onDeletePage = pageId => {
+  const onDeletePage = (pageId: PageId) => {
     const updatedPages = pages.filter(p => p.id !== pageId);
     setData(updatedPages);
   };
