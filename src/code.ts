@@ -10,21 +10,12 @@ const createPage = () => figma.createPage();
 const renamePage = (page: PageNode, name: string) => (page.name = name);
 const setCurrentPage = (page: PageNode) => (figma.currentPage = page);
 
-// renamePage(figma.currentPage, "Components");
-// createPage();
-// renamePage(doc.children[1] as PageNode, "_______________________");
-// createPage();
-// renamePage(doc.children[2] as PageNode, "🏗V1");
-
-const Mock: FigmaDocument = [
-  { id: 1, name: "Component" },
-  { id: 2, name: "_________________" },
-  { id: 3, name: "V1" }
-];
+ui.onmessage = message => {
+  cs.setAsync("pages", message);
+};
 
 figma.showUI(__html__, { width: 600, height: 310 });
-cs.setAsync("test", Mock).then(() => cs.getAsync("test"));
-ui.postMessage(Mock);
+cs.getAsync("pages").then(asyncPages => ui.postMessage(asyncPages));
 
 // createPage();
 // setCurrentPage(doc.children[1]);

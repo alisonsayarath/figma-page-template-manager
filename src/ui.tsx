@@ -5,7 +5,7 @@ import * as ReactDOM from "react-dom";
 import { FigmaDocument } from "./types";
 import "./ui.css";
 
-const PageField = ({ page, onChange }) => {
+const PageField = ({ page, onChange, onDelete }) => {
   return (
     <div className="field">
       <input
@@ -15,7 +15,10 @@ const PageField = ({ page, onChange }) => {
         value={page.name}
         onChange={e => onChange(page.id, e.target.value)}
       />
-      <button className="button button--secondary-destructive" id="create">
+      <button
+        className="button button--secondary-destructive"
+        onClick={() => onDelete(page.id)}
+      >
         Delete
       </button>
     </div>
@@ -29,24 +32,34 @@ const App = () => {
     setPages(event.data.pluginMessage);
   };
 
+  const setData = (updatedPages: FigmaDocument) => {
+    parent.postMessage({ pluginMessage: updatedPages }, "*");
+    setPages(updatedPages);
+  };
+
   const onChangeName = (pageId, value: string) => {
     const updatedPages = pages.map(p =>
       p.id == pageId ? { id: pageId, name: value } : p
     );
-
-    setPages(updatedPages);
+    setData(updatedPages);
   };
 
-  React.useEffect(() => {
-    console.log(pages);
-  }, [pages]);
+  const onDeletePage = pageId => {
+    const updatedPages = pages.filter(p => p.id !== pageId);
+    setData(updatedPages);
+  };
 
   return (
     <>
       <div>
         {pages &&
           pages.map((page, i) => (
-            <PageField key={page.id} page={page} onChange={onChangeName} />
+            <PageField
+              key={page.id}
+              page={page}
+              onChange={onChangeName}
+              onDelete={onDeletePage}
+            />
           ))}
         <button className="button button--primary" id="create">
           Create a new page
