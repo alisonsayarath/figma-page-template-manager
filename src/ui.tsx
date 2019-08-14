@@ -2,7 +2,7 @@ import * as React from "react";
 import { useState } from "react";
 import * as ReactDOM from "react-dom";
 
-import { FigmaDocument } from "./types";
+import { Pages } from "./types";
 import "./ui.css";
 
 const PageField = ({ page, onChange, onDelete }) => {
@@ -26,13 +26,13 @@ const PageField = ({ page, onChange, onDelete }) => {
 };
 
 const App = () => {
-  const [pages, setPages] = useState<FigmaDocument>([]);
+  const [pages, setPages] = useState<Pages>([]);
 
   onmessage = event => {
     setPages(event.data.pluginMessage);
   };
 
-  const setData = (updatedPages: FigmaDocument) => {
+  const setData = (updatedPages: Pages) => {
     parent.postMessage({ pluginMessage: updatedPages }, "*");
     setPages(updatedPages);
   };

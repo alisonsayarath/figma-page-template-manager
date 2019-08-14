@@ -1,4 +1,4 @@
-import { FigmaDocument } from "./types";
+import { Pages } from "./types";
 
 figma.showUI(__html__);
 
