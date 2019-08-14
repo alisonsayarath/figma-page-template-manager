@@ -33,80 +33,52 @@ const App = () => {
   };
 
   const triggerChanges = () => {
-    parent.postMessage({ pluginMessage: { state: "TRIGGER_CHANGES" } }, "*");
-  };
-
-  const setData = (updatedPages: Pages, state: MessageState) => {
-    parent.postMessage({ pluginMessage: { state, data: updatedPages } }, "*");
-    setPages(updatedPages);
+    parent.postMessage({ pluginMessage: { data: pages } }, "*");
   };
 
   const onChangeName = (pageId: PageId, value: PageName) => {
     const updatedPages = pages.map(p =>
       p.id == pageId ? { id: pageId, name: value } : p
     );
-
-    parent.postMessage(
-      {
-        pluginMessage: {
-          state: "PAGE_RENAMED",
-          data: { id: pageId, name: value },
-          pages: updatedPages
-        }
-      },
-      "*"
-    );
     setPages(updatedPages);
-    // setData(updatedPages, "PAGE_RENAMED");
   };
 
   const onDeletePage = (pageId: PageId) => {
     const updatedPages = pages.filter(p => p.id !== pageId);
-    parent.postMessage(
-      {
-        pluginMessage: {
-          state: "PAGE_DELETED",
-          data: { id: pageId },
-          pages: updatedPages
-        }
-      },
-      "*"
-    );
     setPages(updatedPages);
-
-    // setData(updatedPages, "PAGE_DELETED");
   };
 
   const onCreatePage = () => {
-    // setData(pages.concat({ id: pages.length + 1, name: "V3" }), "PAGE_CREATED");
-    parent.postMessage({ pluginMessage: { state: "PAGE_CREATED" } }, "*");
+    setPages(pages.concat({ name: "V3" }));
+  };
+
+  const onCancel = () => {
+    parent.postMessage({ pluginMessage: { quit: true } }, "*");
   };
 
   return (
     <>
-      <div>
+      <div className="container">
         {pages &&
           pages.map((page, i) => (
             <PageField
-              key={page.id}
+              key={page.id || i}
               page={page}
               onChange={onChangeName}
               onDelete={onDeletePage}
             />
           ))}
-        <button
-          className="button button--primary"
-          id="create"
-          onClick={onCreatePage}
-        >
-          Create a new page
+        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          <button className="button button--secondary" onClick={onCreatePage}>
+            Create a new page
+          </button>
+        </div>
+      </div>
+      <div className="footer container">
+        <button onClick={onCancel} className="button button--secondary">
+          Cancel changes
         </button>
-
-        <button
-          onClick={triggerChanges}
-          className="button button--primary"
-          id="create"
-        >
+        <button onClick={triggerChanges} className="button button--primary">
           Trigger changes
         </button>
       </div>

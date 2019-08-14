@@ -317,10 +317,34 @@
 body {
   font: 12px "Inter";
   text-align: center;
-  margin: 20px;
+  margin: 0;
 }
+
+.container {
+  padding: 8px;
+}
+
+/* field */
 
 .field {
   display: flex;
   margin-bottom: 1rem;
+}
+
+.field .input {
+  margin-right: 1rem;
+}
+
+/* footer */
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  border-top: 1px solid #e5e5e5;
+  padding: 1rem 8px;
+  margin-top: 1rem;
+}
+
+.footer button:first-child {
+  margin-right: 0.5rem;
 }
