@@ -11,22 +11,28 @@ const renamePage = (page: PageNode, name: PageName) => {
   page.name = name;
 };
 const setCurrentPage = (page: PageNode) => (figma.currentPage = page);
-
-ui.onmessage = message => {
-  cs.setAsync("pages", message);
-};
-
-// console.log(doc.children);
-figma.showUI(__html__, { width: 600, height: 310 });
-cs.getAsync("pages").then(asyncPages => ui.postMessage(asyncPages));
-
 const getPages = () => cs.getAsync("pages");
 
-getPages().then(pages => {
-  for (let i = 0; i < doc.children.length; i++) {
-    renamePage(doc.children[i] as PageNode, pages[i].name);
+const triggerChanges = () => {
+  getPages().then(pages => {
+    for (let i = 0; i < doc.children.length; i++) {
+      renamePage(doc.children[i] as PageNode, pages[i].name);
+    }
+  });
+};
+
+ui.onmessage = message => {
+  switch (message.state) {
+    case "TRIGGER_CHANGES":
+      triggerChanges();
+    case "PAGE_CREATED":
+      console.log(message.data);
   }
-});
+  // cs.setAsync("pages", message);
+};
+
+figma.showUI(__html__, { width: 600, height: 310 });
+cs.getAsync("pages").then(asyncPages => ui.postMessage(asyncPages));
 
 // createPage();
 // setCurrentPage(doc.children[1]);

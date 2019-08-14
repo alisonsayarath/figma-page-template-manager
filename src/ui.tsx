@@ -2,7 +2,7 @@ import * as React from "react";
 import { useState } from "react";
 import * as ReactDOM from "react-dom";
 
-import { Pages, PageId, PageName } from "./types";
+import { Pages, PageId, PageName, MessageState } from "./types";
 import "./ui.css";
 
 const PageField = ({ page, onChange, onDelete }) => {
@@ -32,8 +32,12 @@ const App = () => {
     setPages(event.data.pluginMessage);
   };
 
-  const setData = (updatedPages: Pages) => {
-    parent.postMessage({ pluginMessage: updatedPages }, "*");
+  const triggerChanges = () => {
+    parent.postMessage({ pluginMessage: { state: "TRIGGER_CHANGES" } }, "*");
+  };
+
+  const setData = (updatedPages: Pages, state: keyof typeof MessageState) => {
+    parent.postMessage({ pluginMessage: { state, data: updatedPages } }, "*");
     setPages(updatedPages);
   };
 
@@ -41,16 +45,16 @@ const App = () => {
     const updatedPages = pages.map(p =>
       p.id == pageId ? { id: pageId, name: value } : p
     );
-    setData(updatedPages);
+    setData(updatedPages, "PAGE_RENAMED");
   };
 
   const onDeletePage = (pageId: PageId) => {
     const updatedPages = pages.filter(p => p.id !== pageId);
-    setData(updatedPages);
+    setData(updatedPages, "PAGE_DELETED");
   };
 
   const onCreatePage = () => {
-    setData(pages.concat({ id: pages.length + 1, name: "" }));
+    setData(pages.concat({ id: pages.length + 1, name: "" }), "PAGE_CREATED");
   };
 
   return (
@@ -71,6 +75,14 @@ const App = () => {
           onClick={onCreatePage}
         >
           Create a new page
+        </button>
+
+        <button
+          onClick={triggerChanges}
+          className="button button--primary"
+          id="create"
+        >
+          Trigger changes
         </button>
       </div>
     </>
