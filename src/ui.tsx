@@ -33,7 +33,10 @@ const App = () => {
   };
 
   const triggerChanges = () => {
-    parent.postMessage({ pluginMessage: { data: pages } }, "*");
+    parent.postMessage(
+      { pluginMessage: { action: "TRIGGER_CHANGES", data: pages } },
+      "*"
+    );
   };
 
   const onChangeName = (pageId: PageId, value: PageName) => {
@@ -48,12 +51,16 @@ const App = () => {
     setPages(updatedPages);
   };
 
-  const onCreatePage = () => {
-    setPages(pages.concat({ name: "V3" }));
-  };
+  const onCreatePage = () => setPages(pages.concat({ name: "V3" }));
 
-  const onCancel = () => {
-    parent.postMessage({ pluginMessage: { quit: true } }, "*");
+  const onCancel = () =>
+    parent.postMessage({ pluginMessage: { action: "QUIT_PLUGIN" } }, "*");
+
+  const createTemplateFromPages = () => {
+    parent.postMessage(
+      { pluginMessage: { action: "CREATE_TEMPLATE_FROM_PAGE" } },
+      "*"
+    );
   };
 
   return (
@@ -75,6 +82,12 @@ const App = () => {
         </div>
       </div>
       <div className="footer container">
+        <button
+          onClick={createTemplateFromPages}
+          className="button button--secondary"
+        >
+          Create template from current document
+        </button>
         <button onClick={onCancel} className="button button--secondary">
           Cancel changes
         </button>
