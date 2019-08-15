@@ -13,11 +13,12 @@ const PageField = ({ page, onChange, onDelete }) => {
         id="count"
         placeholder="Page name"
         value={page.name}
-        onChange={e => onChange(page.id, e.target.value)}
+        onChange={e => onChange(page._temporaryId, e.target.value)}
+        autoFocus={!page.name}
       />
       <button
         className="button button--secondary-destructive"
-        onClick={() => onDelete(page.id)}
+        onClick={() => onDelete(page._temporaryId)}
       >
         Delete
       </button>
@@ -29,8 +30,14 @@ const App = () => {
   const [pages, setPages] = useState<Pages>([]);
 
   onmessage = event => {
-    setPages(event.data.pluginMessage);
+    setPages(formatPages(event.data.pluginMessage));
   };
+
+  const formatPages = (pages: Pages) =>
+    pages.map((item, index) => ({
+      name: item.name,
+      _temporaryId: index.toString()
+    }));
 
   const triggerChanges = () => {
     parent.postMessage(
@@ -39,19 +46,21 @@ const App = () => {
     );
   };
 
-  const onChangeName = (pageId: PageId, value: PageName) => {
+  const onRenamePage = (pageId: PageId, value: PageName) => {
     const updatedPages = pages.map(p =>
-      p.id == pageId ? { id: pageId, name: value } : p
+      p._temporaryId === pageId ? { _temporaryId: pageId, name: value } : p
     );
     setPages(updatedPages);
   };
 
   const onDeletePage = (pageId: PageId) => {
-    const updatedPages = pages.filter(p => p.id !== pageId);
+    const updatedPages = pages.filter(p => p._temporaryId !== pageId);
     setPages(updatedPages);
   };
 
-  const onCreatePage = () => setPages(pages.concat({ name: "V3" }));
+  const onCreatePage = () => {
+    setPages(pages.concat({ _temporaryId: `${pages.length}`, name: "" }));
+  };
 
   const onCancel = () =>
     parent.postMessage({ pluginMessage: { action: "QUIT_PLUGIN" } }, "*");
@@ -63,23 +72,27 @@ const App = () => {
     );
   };
 
+  const hasNewPage = pages.filter(p => !p.id && !p.name).length;
+
   return (
     <>
       <div className="container">
         {pages &&
-          pages.map((page, i) => (
+          pages.map(page => (
             <PageField
-              key={page.id || i}
+              key={page._temporaryId}
               page={page}
-              onChange={onChangeName}
+              onChange={onRenamePage}
               onDelete={onDeletePage}
             />
           ))}
+        {/* {hasNewPage ? ( */}
         <div style={{ display: "flex", justifyContent: "flex-end" }}>
           <button className="button button--secondary" onClick={onCreatePage}>
             Create a new page
           </button>
         </div>
+        {/* ) : null} */}
       </div>
       <div className="footer container">
         <button
