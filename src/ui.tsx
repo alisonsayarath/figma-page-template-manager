@@ -2,35 +2,30 @@ import * as React from "react";
 import { useState } from "react";
 import * as ReactDOM from "react-dom";
 
-import { Pages, TemporaryPageId, PageName } from "./types";
+import { Pages, TemporaryPageId, PageName, Template } from "./types";
+import { PageField } from "./components/page-field";
+import { TemplateField } from "./components/template-field";
+import "./figma.css";
 import "./ui.css";
 
-const PageField = ({ page, onChange, onDelete }) => {
-  return (
-    <div className="field">
-      <input
-        className="input"
-        id="count"
-        placeholder="Page name"
-        value={page.name}
-        onChange={e => onChange(page._temporaryId, e.target.value)}
-        autoFocus={!page.name}
-      />
-      <button
-        className="button button--secondary-destructive"
-        onClick={() => onDelete(page._temporaryId)}
-      >
-        Delete
-      </button>
-    </div>
-  );
-};
+const TEMPLATES = [
+  { name: "Premier template", id: "1", isDefault: false },
+  { name: "Deuxième template", id: "2", isDefault: true },
+  { name: "Troisième template", id: "3", isDefault: false }
+] as Template[];
 
 const App = () => {
   const [pages, setPages] = useState<Pages>([]);
+  const [selectedTemplate, setSelectedTemplate] = useState<Template>(null);
 
   onmessage = event => {
     setPages(formatPages(event.data.pluginMessage));
+    const selectedTemplate = TEMPLATES.filter(t => t.isDefault === true);
+    setSelectedTemplate(selectedTemplate[0]);
+  };
+
+  const onSelectTemplate = (template: Template) => {
+    setSelectedTemplate(template);
   };
 
   const formatPages = (pages: Pages) =>
@@ -72,19 +67,33 @@ const App = () => {
   return (
     <>
       <div className="container">
-        {pages &&
-          pages.map(page => (
-            <PageField
-              key={page._temporaryId}
-              page={page}
-              onChange={onRenamePage}
-              onDelete={onDeletePage}
+        <div className="template-container">
+          {TEMPLATES.map(t => (
+            <TemplateField
+              key={t.id}
+              name={t.name}
+              id={t.id}
+              isDefault={t.isDefault}
+              isSelected={selectedTemplate && t.id == selectedTemplate.id}
+              onSelectTemplate={onSelectTemplate}
             />
           ))}
-        <div style={{ display: "flex", justifyContent: "flex-end" }}>
-          <button className="button button--secondary" onClick={onCreatePage}>
-            Create a new page
-          </button>
+        </div>
+        <div className="page-container">
+          {pages &&
+            pages.map(page => (
+              <PageField
+                key={page._temporaryId}
+                page={page}
+                onChange={onRenamePage}
+                onDelete={onDeletePage}
+              />
+            ))}
+          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+            <button className="button button--secondary" onClick={onCreatePage}>
+              Create a new page
+            </button>
+          </div>
         </div>
       </div>
       <div className="footer container">
@@ -95,7 +104,7 @@ const App = () => {
           Create template from current document
         </button>
         <button onClick={triggerChanges} className="button button--primary">
-          Trigger changes
+          Generate template
         </button>
       </div>
     </>
