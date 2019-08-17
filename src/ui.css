@@ -2,6 +2,13 @@
   font: 12px "Inter";
 }
 
+#app {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
 body {
   margin: 0;
 }
@@ -9,7 +16,10 @@ body {
 .container {
   display: flex;
   justify-content: space-between;
-  padding: 0 8px 0 0;
+}
+
+.container:not(.footer) {
+  flex-grow: 1;
 }
 
 .template-container {
@@ -20,15 +30,19 @@ body {
 }
 
 .page-container {
-  width: 65%;
-  padding: 0.5rem 0 1rem 0.5rem;
+  flex-grow: 1;
+  padding: 0.5rem 0;
+}
+
+.pages {
+  padding: 0 0.5rem;
 }
 
 /* field */
 
 .field {
   display: flex;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 .field .input {
@@ -38,8 +52,24 @@ body {
 /* options */
 
 .option {
-  padding: 0.85rem 0 0.85rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 32px;
+  padding: 0.25rem 0.25rem 0.25rem 1rem;
   margin-bottom: 0.25rem;
+}
+
+.option span {
+  cursor: default;
+}
+
+.option .icon {
+  visibility: hidden;
+}
+
+.option:hover .icon {
+  visibility: visible;
 }
 
 .option--selected {
@@ -56,4 +86,11 @@ body {
 
 .footer button:first-child {
   margin-right: 0.5rem;
+}
+
+.headtitle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0.25rem 0 0.5rem;
 }

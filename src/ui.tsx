@@ -68,6 +68,10 @@ const App = () => {
     <>
       <div className="container">
         <div className="template-container">
+          <div className="headtitle">
+            <span className="section-title">Templates</span>
+            <span className="icon icon--plus icon--button" />
+          </div>
           {TEMPLATES.map(t => (
             <TemplateField
               key={t.id}
@@ -80,19 +84,25 @@ const App = () => {
           ))}
         </div>
         <div className="page-container">
-          {pages &&
-            pages.map(page => (
-              <PageField
-                key={page._temporaryId}
-                page={page}
-                onChange={onRenamePage}
-                onDelete={onDeletePage}
-              />
-            ))}
-          <div style={{ display: "flex", justifyContent: "flex-end" }}>
-            <button className="button button--secondary" onClick={onCreatePage}>
-              Create a new page
-            </button>
+          <div className="headtitle">
+            <span className="section-title" style={{ marginBottom: ".5rem" }}>
+              {selectedTemplate ? `Pages in ${selectedTemplate.name}` : "Pages"}
+            </span>
+            <span
+              className="icon icon--plus icon--button"
+              onClick={onCreatePage}
+            />
+          </div>
+          <div className="pages">
+            {pages &&
+              pages.map(page => (
+                <PageField
+                  key={page._temporaryId}
+                  page={page}
+                  onChange={onRenamePage}
+                  onDelete={onDeletePage}
+                />
+              ))}
           </div>
         </div>
       </div>

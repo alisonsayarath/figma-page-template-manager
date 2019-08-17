@@ -72,6 +72,10 @@
   background-image: url("data:image/svg+xml;utf8,%3Csvg%20fill%3D%22none%22%20height%3D%2296%22%20viewBox%3D%220%200%2032%2096%22%20width%3D%2232%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20clip-rule%3D%22evenodd%22%20fill-rule%3D%22evenodd%22%3E%3Cpath%20d%3D%22m15%209.5c-.5523%200-1%20.44772-1%201h4c0-.55228-.4477-1-1-1zm4%201c0-1.10457-.8954-2-2-2h-2c-1.1046%200-2%20.89543-2%202h-1.5-1.5v1h1v10c0%201.1046.8954%202%202%202h6c1.1046%200%202-.8954%202-2v-10h1v-1h-1.5zm1%201h-1.5-5-1.5v10c0%20.5523.4477%201%201%201h6c.5523%200%201-.4477%201-1zm-6%207v-4h1v4zm3%200v-4h1v4z%22%20fill%3D%22%23000%22%20fill-opacity%3D%22.8%22%2F%3E%3Cpath%20d%3D%22m15%2041.5c-.5523%200-1%20.4477-1%201h4c0-.5523-.4477-1-1-1zm4%201c0-1.1046-.8954-2-2-2h-2c-1.1046%200-2%20.8954-2%202h-1.5-1.5v1h1v10c0%201.1046.8954%202%202%202h6c1.1046%200%202-.8954%202-2v-10h1v-1h-1.5zm1%201h-1.5-5-1.5v10c0%20.5523.4477%201%201%201h6c.5523%200%201-.4477%201-1zm-6%207v-4h1v4zm3%200v-4h1v4z%22%20fill%3D%22%23000%22%20fill-opacity%3D%22.3%22%2F%3E%3Cpath%20d%3D%22m15%2073.5c-.5523%200-1%20.4477-1%201h4c0-.5523-.4477-1-1-1zm4%201c0-1.1046-.8954-2-2-2h-2c-1.1046%200-2%20.8954-2%202h-1.5-1.5v1h1v10c0%201.1046.8954%202%202%202h6c1.1046%200%202-.8954%202-2v-10h1v-1h-1.5zm1%201h-1.5-5-1.5v10c0%20.5523.4477%201%201%201h6c.5523%200%201-.4477%201-1zm-6%207v-4h1v4zm3%200v-4h1v4z%22%20fill%3D%22%2318a0fb%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
 }
 
+.icon--plus {
+  background-image: url("data:image/svg+xml;utf8,%3Csvg%20fill%3D%22none%22%20height%3D%2296%22%20viewBox%3D%220%200%2032%2096%22%20width%3D%2232%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20clip-rule%3D%22evenodd%22%20fill-rule%3D%22evenodd%22%3E%3Cpath%20d%3D%22m15.5%2015.5v-5h1v5h5v1h-5v5h-1v-5h-5v-1z%22%20fill%3D%22%23000%22%20fill-opacity%3D%22.8%22%2F%3E%3Cpath%20d%3D%22m15.5%2047.5v-5h1v5h5v1h-5v5h-1v-5h-5v-1z%22%20fill%3D%22%23000%22%20fill-opacity%3D%22.3%22%2F%3E%3Cpath%20d%3D%22m15.5%2079.5v-5h1v5h5v1h-5v5h-1v-5h-5v-1z%22%20fill%3D%22%2318a0fb%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+}
+
 .label {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -355,4 +359,22 @@
 
 .input-icon__input:disabled:hover {
   border: 1px solid transparent;
+}
+
+.section-title {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 32px;
+  padding: 0 4px 0 8px;
+  color: rgba(0, 0, 0, 0.8);
+  background-color: #ffffff;
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  line-height: 16px;
+  letter-spacing: 0.005em;
 }
