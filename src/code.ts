@@ -22,6 +22,22 @@ const triggerChanges = messageData => {
     createPage();
     renamePage(doc.children[doc.children.length - 1] as PageNode, page.name);
   });
+
+  const firstPage = doc.children[0] as PageNode;
+  const firstPageChildren = firstPage.children.length
+    ? firstPage.children
+    : null;
+
+  /** Moves all the layers from the first page to the new first one */
+  if (firstPageChildren) {
+    const secondPage = doc.children[1] as PageNode;
+    firstPageChildren.forEach(slice => {
+      secondPage.appendChild(slice);
+    });
+  }
+
+  figma.currentPage = doc.children[1] as PageNode;
+  firstPage.remove();
 };
 
 getPages().then(asyncPages => {
