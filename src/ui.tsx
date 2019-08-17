@@ -2,7 +2,7 @@ import * as React from "react";
 import { useState } from "react";
 import * as ReactDOM from "react-dom";
 
-import { Pages, PageId, PageName, MessageState } from "./types";
+import { Pages, TemporaryPageId, PageName } from "./types";
 import "./ui.css";
 
 const PageField = ({ page, onChange, onDelete }) => {
@@ -46,14 +46,14 @@ const App = () => {
     );
   };
 
-  const onRenamePage = (pageId: PageId, value: PageName) => {
+  const onRenamePage = (pageId: TemporaryPageId, value: PageName) => {
     const updatedPages = pages.map(p =>
       p._temporaryId === pageId ? { _temporaryId: pageId, name: value } : p
     );
     setPages(updatedPages);
   };
 
-  const onDeletePage = (pageId: PageId) => {
+  const onDeletePage = (pageId: TemporaryPageId) => {
     const updatedPages = pages.filter(p => p._temporaryId !== pageId);
     setPages(updatedPages);
   };
@@ -62,17 +62,12 @@ const App = () => {
     setPages(pages.concat({ _temporaryId: `${pages.length}`, name: "" }));
   };
 
-  const onCancel = () =>
-    parent.postMessage({ pluginMessage: { action: "QUIT_PLUGIN" } }, "*");
-
   const createTemplateFromPages = () => {
     parent.postMessage(
       { pluginMessage: { action: "CREATE_TEMPLATE_FROM_PAGE" } },
       "*"
     );
   };
-
-  const hasNewPage = pages.filter(p => !p.id && !p.name).length;
 
   return (
     <>
@@ -86,13 +81,11 @@ const App = () => {
               onDelete={onDeletePage}
             />
           ))}
-        {/* {hasNewPage ? ( */}
         <div style={{ display: "flex", justifyContent: "flex-end" }}>
           <button className="button button--secondary" onClick={onCreatePage}>
             Create a new page
           </button>
         </div>
-        {/* ) : null} */}
       </div>
       <div className="footer container">
         <button
@@ -100,9 +93,6 @@ const App = () => {
           className="button button--secondary"
         >
           Create template from current document
-        </button>
-        <button onClick={onCancel} className="button button--secondary">
-          Cancel changes
         </button>
         <button onClick={triggerChanges} className="button button--primary">
           Trigger changes

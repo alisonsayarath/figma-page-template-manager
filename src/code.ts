@@ -1,4 +1,4 @@
-import { PageName } from "./types";
+import { PageName, Message, Pages } from "./types";
 
 figma.showUI(__html__);
 
@@ -7,17 +7,15 @@ const cs = figma.clientStorage;
 const ui = figma.ui;
 
 const createPage = () => figma.createPage();
-const renamePage = (page: PageNode, name: PageName) => {
+const renamePage = (page: PageNode, name: PageName): void => {
   page.name = name;
 };
+const getPages = (): Promise<any> => cs.getAsync("pages");
 
-// cs.setAsync("pages", undefined);
+const getExistingPages = (): { name: PageName }[] =>
+  doc.children.map(p => ({ name: p.name }));
 
-const getPages = () => cs.getAsync("pages");
-
-const getExistingPages = () => doc.children.map(p => ({ name: p.name }));
-
-const triggerChanges = messageData => {
+const triggerChanges = (messageData: Pages) => {
   messageData.forEach(page => {
     createPage();
     renamePage(doc.children[doc.children.length - 1] as PageNode, page.name);
@@ -51,15 +49,12 @@ getPages().then(asyncPages => {
   ui.postMessage(existingPages);
 });
 
-ui.onmessage = message => {
+ui.onmessage = (message: Message) => {
   switch (message.action) {
     case "CREATE_TEMPLATE_FROM_PAGE":
       const existingPages = getExistingPages();
       cs.setAsync("pages", existingPages);
       ui.postMessage(existingPages);
-      break;
-    case "QUIT_PLUGIN":
-      figma.closePlugin();
       break;
     case "TRIGGER_CHANGES":
       triggerChanges(message.data);
@@ -71,4 +66,4 @@ ui.onmessage = message => {
   }
 };
 
-figma.showUI(__html__, { width: 400, height: 300 });
+figma.showUI(__html__, { width: 580, height: 300 });
