@@ -9,16 +9,23 @@ export const PageInput = ({ page, onChange, onDelete, onSave }) => {
         placeholder="Page name"
         value={page.name}
         onChange={e => onChange(page.id, e.target.value)}
-        autoFocus={!page.name}
+        onKeyDown={e => {
+          if (e.keyCode === 13) {
+            onSave(page.id);
+          }
+        }}
+        autoFocus={true}
       />
-      <span
-        className="icon icon--plus icon--button"
-        onClick={() => onSave(page.id)}
-      />
-      <span
-        className="icon icon--trash icon--button"
-        onClick={() => onDelete(page.id)}
-      />
+      <div className="buttons-wrapper">
+        <span
+          className="icon icon--resolve icon--button"
+          onClick={() => onSave(page.id)}
+        />
+        <span
+          className="icon icon--trash icon--button"
+          onClick={() => onDelete(page.id)}
+        />
+      </div>
     </div>
   );
 };

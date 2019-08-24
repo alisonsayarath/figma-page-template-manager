@@ -64,7 +64,6 @@ const triggerChanges = (messageData: Template[]) => {
 // cs.setAsync("templates", undefined);
 
 getTemplates().then(asyncTemplates => {
-  console.log("GET TEMPLATES", asyncTemplates);
   if (asyncTemplates) {
     const newTemplates = asyncTemplates.map((t, i) => {
       return {
@@ -86,7 +85,6 @@ getTemplates().then(asyncTemplates => {
 });
 
 ui.onmessage = (message: Message) => {
-  console.log("onmessage in code.ts");
   const templates = message.data;
   switch (message.action) {
     case "CREATE_TEMPLATE_FROM_PAGE":

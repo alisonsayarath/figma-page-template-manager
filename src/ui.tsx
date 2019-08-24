@@ -18,19 +18,15 @@ const App = () => {
   const [creatingTemplate, setCreatingTemplate] = useState<Template | null>(
     null
   );
-
   const [creatingPage, setCreatingPage] = useState(null);
 
   onmessage = ({ data }) => {
+    console.log(data.pluginMessage);
     setTemplates(data.pluginMessage);
-    if (data.pluginMessage) {
+    if (!selectedTemplate && data.pluginMessage) {
       setSelectedTemplate(data.pluginMessage[0]);
     }
   };
-
-  // useEffect(() => {
-  //   if (selectedTemplate) setPages(selectedTemplate.pages);
-  // }, [selectedTemplate]);
 
   const openTemplateInput = () => {
     const creatingTemplateMock = {
@@ -41,6 +37,7 @@ const App = () => {
     };
 
     setCreatingTemplate(creatingTemplateMock);
+    setSelectedTemplate(creatingTemplateMock);
   };
 
   const openPageInput = () => {
@@ -53,17 +50,12 @@ const App = () => {
   };
 
   const onSelectTemplate = (template: Template) => {
+    setCreatingTemplate(null);
+    setCreatingPage(null);
     setSelectedTemplate(template);
   };
 
   /** PAGES */
-
-  const onRenamePage = (pageId: TemporaryPageId, value: PageName) => {
-    const updatedPages = selectedTemplate.pages.map(p =>
-      p.id === pageId ? { id: pageId, name: value } : p
-    );
-    setSelectedTemplate({ ...selectedTemplate, pages: updatedPages });
-  };
 
   const onDeletePage = (pageId: TemporaryPageId) => {
     const newPagesArray = selectedTemplate.pages.filter(p => p.id !== pageId);
@@ -83,15 +75,35 @@ const App = () => {
       { pluginMessage: { action: "CHANGE_TEMPLATE", data: updatedTemplates } },
       "*"
     );
+    setSelectedTemplate({ ...selectedTemplate, pages: newPagesArray });
   };
 
-  const onCreatePage = () => {
-    const newPagesArray = selectedTemplate.pages.concat({
-      id: (selectedTemplate.pages.length + 1).toString(),
-      name: ""
-    });
+  const onRenamePage = (pageId: TemporaryPageId) => {
+    if (!creatingPage.name) {
+      return;
+    }
 
+    const newPagesArray = selectedTemplate.pages.map(p =>
+      p.id === pageId ? { id: pageId, name: creatingPage.name } : p
+    );
+    const updatedTemplates = templates.map(t =>
+      t.id === selectedTemplate.id
+        ? {
+            name: selectedTemplate.name,
+            id: selectedTemplate.id,
+            isDefault: selectedTemplate.isDefault,
+            pages: newPagesArray
+          }
+        : t
+    );
+
+    setTemplates(updatedTemplates);
+    parent.postMessage(
+      { pluginMessage: { action: "CHANGE_TEMPLATE", data: updatedTemplates } },
+      "*"
+    );
     setSelectedTemplate({ ...selectedTemplate, pages: newPagesArray });
+    setCreatingPage(null);
   };
 
   const onSavePage = (pageId: TemporaryPageId) => {
@@ -116,6 +128,7 @@ const App = () => {
       { pluginMessage: { action: "CHANGE_TEMPLATE", data: updatedTemplates } },
       "*"
     );
+    setSelectedTemplate({ ...selectedTemplate, pages: newPagesArray });
     setCreatingPage(null);
   };
 
@@ -153,6 +166,8 @@ const App = () => {
     //   "*"
     // );
   };
+
+  const pageIds = selectedTemplate && selectedTemplate.pages.map(p => p.id);
 
   return (
     <>
@@ -201,16 +216,34 @@ const App = () => {
           <div className="pages">
             {selectedTemplate &&
               selectedTemplate.pages &&
-              selectedTemplate.pages.map(page => (
-                <PageField
-                  key={page.id}
-                  page={page}
-                  onChange={onRenamePage}
-                  onDelete={onDeletePage}
-                  onSave={onSavePage}
-                />
-              ))}
-            {creatingPage ? (
+              selectedTemplate.pages.map(page => {
+                if (creatingPage && creatingPage.id === page.id) {
+                  return (
+                    <PageInput
+                      key={page.id}
+                      page={creatingPage}
+                      onChange={(_: string, value: string) => {
+                        setCreatingPage({ ...creatingPage, name: value });
+                      }}
+                      onDelete={() => {}}
+                      onSave={onRenamePage}
+                    />
+                  );
+                }
+                return (
+                  <PageField
+                    key={page.id}
+                    page={page}
+                    onTriggerRename={() => {
+                      setCreatingPage(page);
+                    }}
+                    onDelete={onDeletePage}
+                    onSave={onSavePage}
+                  />
+                );
+              })}
+
+            {creatingPage && !pageIds.includes(creatingPage.id) ? (
               <PageInput
                 page={creatingPage}
                 onChange={(_: string, value: string) => {

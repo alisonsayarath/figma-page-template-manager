@@ -1,14 +1,19 @@
 import * as React from "react";
 
-export const PageField = ({ page, onChange, onDelete, onSave }) => {
-  console.log(page);
+export const PageField = ({ page, onTriggerRename, onDelete, onSave }) => {
   return (
     <div className="field">
       <span>{page.name}</span>
-      <span
-        className="icon icon--trash icon--button"
-        onClick={() => onDelete(page.id)}
-      />
+      <div className="buttons-wrapper">
+        <span
+          className="icon icon--break icon--button"
+          onClick={onTriggerRename}
+        />
+        <span
+          className="icon icon--trash icon--button"
+          onClick={() => onDelete(page.id)}
+        />
+      </div>
     </div>
   );
 };

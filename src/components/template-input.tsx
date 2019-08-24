@@ -22,14 +22,16 @@ export const TemplateInput = ({
         placeholder="Template name..."
         onChange={e => onChange(e.target.value)}
       />
-      <span
-        className="icon icon--plus icon--button"
-        onClick={onCreateTemplate}
-      />
-      <span
-        className="icon icon--trash icon--button"
-        onClick={onDeleteCreatingTemplate}
-      />
+      <div className="buttons-wrapper">
+        <span
+          className="icon icon--resolve icon--button"
+          onClick={onCreateTemplate}
+        />
+        <span
+          className="icon icon--trash icon--button"
+          onClick={onDeleteCreatingTemplate}
+        />
+      </div>
     </div>
   );
 };
