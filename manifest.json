@@ -1,5 +1,5 @@
 {
-  "name": "Page Template Generator",
+  "name": "Page Template Manager",
   "id": "740177660266789812",
   "api": "1.0.0",
   "main": "dist/code.js",

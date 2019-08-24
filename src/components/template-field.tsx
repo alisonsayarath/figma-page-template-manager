@@ -3,23 +3,29 @@ import { Template } from "../types";
 
 type TemplateFieldProps = {
   isSelected?: boolean;
+  onDeleteTemplate: (string) => void;
   onSelectTemplate: (Template) => void;
 };
 
 export const TemplateField = ({
   isSelected,
-  onSelectTemplate,
   name,
   id,
-  isDefault
+  pages,
+  isDefault,
+  onDeleteTemplate,
+  onSelectTemplate
 }: TemplateFieldProps & Template) => {
   return (
     <div
       className={isSelected ? `option option--selected` : `option`}
-      onClick={() => onSelectTemplate({ name, id, isDefault })}
+      onClick={() => onSelectTemplate({ name, id, isDefault, pages })}
     >
       <span>{name}</span>
-      <span className="icon icon--trash icon--button" />
+      <span
+        className="icon icon--trash icon--button"
+        onClick={() => onDeleteTemplate(id)}
+      />
     </div>
   );
 };

@@ -1,19 +1,13 @@
 import * as React from "react";
 
-export const PageField = ({ page, onChange, onDelete }) => {
+export const PageField = ({ page, onChange, onDelete, onSave }) => {
+  console.log(page);
   return (
     <div className="field">
-      <input
-        className="input"
-        id="count"
-        placeholder="Page name"
-        value={page.name}
-        onChange={e => onChange(page._temporaryId, e.target.value)}
-        autoFocus={!page.name}
-      />
+      <span>{page.name}</span>
       <span
         className="icon icon--trash icon--button"
-        onClick={() => onDelete(page._temporaryId)}
+        onClick={() => onDelete(page.id)}
       />
     </div>
   );

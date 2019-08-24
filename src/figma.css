@@ -52,7 +52,7 @@
   border: 2px solid transparent;
   border-radius: 2px;
   outline: none;
-  background-position: -2px -2px;
+  /* background-position: -2px -2px; */
 }
 
 .icon--button:hover {
@@ -74,6 +74,10 @@
 
 .icon--plus {
   background-image: url("data:image/svg+xml;utf8,%3Csvg%20fill%3D%22none%22%20height%3D%2296%22%20viewBox%3D%220%200%2032%2096%22%20width%3D%2232%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20clip-rule%3D%22evenodd%22%20fill-rule%3D%22evenodd%22%3E%3Cpath%20d%3D%22m15.5%2015.5v-5h1v5h5v1h-5v5h-1v-5h-5v-1z%22%20fill%3D%22%23000%22%20fill-opacity%3D%22.8%22%2F%3E%3Cpath%20d%3D%22m15.5%2047.5v-5h1v5h5v1h-5v5h-1v-5h-5v-1z%22%20fill%3D%22%23000%22%20fill-opacity%3D%22.3%22%2F%3E%3Cpath%20d%3D%22m15.5%2079.5v-5h1v5h5v1h-5v5h-1v-5h-5v-1z%22%20fill%3D%22%2318a0fb%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+}
+
+.icon--minus {
+  background-image: url("data:image/svg+xml;utf8,%3Csvg%20fill%3D%22none%22%20height%3D%2296%22%20viewBox%3D%220%200%2032%2096%22%20width%3D%2232%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20clip-rule%3D%22evenodd%22%20fill-rule%3D%22evenodd%22%3E%3Cpath%20d%3D%22m21.5%2016.5h-11v-1h11z%22%20fill%3D%22%23000%22%20fill-opacity%3D%22.8%22%2F%3E%3Cpath%20d%3D%22m21.5%2048.5h-11v-1h11z%22%20fill%3D%22%23000%22%20fill-opacity%3D%22.3%22%2F%3E%3Cpath%20d%3D%22m21.5%2080.5h-11v-1h11z%22%20fill%3D%22%2318a0fb%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
 }
 
 .label {
