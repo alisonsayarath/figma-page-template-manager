@@ -21,7 +21,13 @@ export const TemplateField = ({
       className={isSelected ? `option option--selected` : `option`}
       onClick={() => onSelectTemplate({ name, id, isDefault, pages })}
     >
-      <span>{name}</span>
+      <span>
+        {name}{" "}
+        <span className="text--lighter">
+          ({pages.length ? `${pages.length}` : "no"}{" "}
+          {pages.length === 1 ? "page" : "pages"})
+        </span>
+      </span>
       <span
         className="icon icon--trash icon--button"
         onClick={() => onDeleteTemplate(id)}

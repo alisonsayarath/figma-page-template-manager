@@ -13,6 +13,10 @@ body {
   margin: 0;
 }
 
+.text--lighter {
+  color: #b3b3b3;
+}
+
 .container {
   display: flex;
   justify-content: space-between;
