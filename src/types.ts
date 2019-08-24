@@ -18,7 +18,8 @@ export type MessageState =
   | "TRIGGER_CHANGES"
   | "CREATE_TEMPLATE_FROM_PAGE"
   | "CREATE_TEMPLATE"
-  | "CHANGE_TEMPLATE";
+  | "CHANGE_TEMPLATE"
+  | "DELETE_TEMPLATE";
 
 export type Message = {
   action: MessageState;

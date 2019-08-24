@@ -21,6 +21,11 @@ export const TemplateInput = ({
         className="input"
         placeholder="Template name..."
         onChange={e => onChange(e.target.value)}
+        onKeyDown={e => {
+          if (e.keyCode === 13) {
+            onCreateTemplate();
+          }
+        }}
       />
       <div className="buttons-wrapper">
         <span

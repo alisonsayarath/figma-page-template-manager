@@ -104,6 +104,9 @@ ui.onmessage = (message: Message) => {
     case "CREATE_TEMPLATE":
       cs.setAsync("templates", templates);
       ui.postMessage(templates);
+    case "DELETE_TEMPLATE":
+      cs.setAsync("templates", templates);
+      ui.postMessage(templates);
   }
 };
 

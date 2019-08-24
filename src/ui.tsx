@@ -134,9 +134,19 @@ const App = () => {
 
   /** TEMPLATE  */
 
-  const onDeleteTemplate = id => {
-    // const updatedTemplates = TEMPLATES.filter(p => p.id !== id);
-    // setTemplates(updatedTemplates);
+  const onDeleteTemplate = (templateId: string) => {
+    const newTemplatesArray = templates.filter(p => p.id !== templateId);
+    setTemplates(newTemplatesArray);
+    parent.postMessage(
+      {
+        pluginMessage: { action: "DELETE_TEMPLATE", data: newTemplatesArray }
+      },
+      "*"
+    );
+
+    if (selectedTemplate.id == templateId) {
+      setSelectedTemplate(newTemplatesArray[0]);
+    }
   };
 
   /** CREATING TEMPLATE */
