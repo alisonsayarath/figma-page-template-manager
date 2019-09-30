@@ -1,5 +1,9 @@
 {
   "main": "code.js",
+  "scripts": {
+    "build": "webpack --mode=production",
+    "dev": "tsc --watch"
+  },
   "dependencies": {
     "@types/react": "^16.9.1",
     "@types/react-dom": "^16.8.5",

@@ -1,12 +1,13 @@
 import * as React from "react";
 import { useState } from "react";
 import * as ReactDOM from "react-dom";
+import { createTemplate, deleteTemplate, updateTemplate } from "./services/templates";
 import { PageField } from "./components/page-field";
 import { PageInput } from "./components/page-input";
 import { TemplateField } from "./components/template-field";
 import { TemplateInput } from "./components/template-input";
-import "./figma.css";
-import "./ui.css";
+import "./styles/figma.css";
+import "./styles/ui.css";
 const App = () => {
     const [templates, setTemplates] = useState([]);
     const [selectedTemplate, setSelectedTemplate] = useState(null);
@@ -53,7 +54,7 @@ const App = () => {
             }
             : t);
         setTemplates(updatedTemplates);
-        parent.postMessage({ pluginMessage: { action: "CHANGE_TEMPLATE", data: updatedTemplates } }, "*");
+        updateTemplate(updatedTemplates);
         setSelectedTemplate(Object.assign(Object.assign({}, selectedTemplate), { pages: newPagesArray }));
     };
     const onRenamePage = (pageId) => {
@@ -70,7 +71,7 @@ const App = () => {
             }
             : t);
         setTemplates(updatedTemplates);
-        parent.postMessage({ pluginMessage: { action: "CHANGE_TEMPLATE", data: updatedTemplates } }, "*");
+        updateTemplate(updatedTemplates);
         setSelectedTemplate(Object.assign(Object.assign({}, selectedTemplate), { pages: newPagesArray }));
         setCreatingPage(null);
     };
@@ -88,7 +89,7 @@ const App = () => {
             }
             : t);
         setTemplates(updatedTemplates);
-        parent.postMessage({ pluginMessage: { action: "CHANGE_TEMPLATE", data: updatedTemplates } }, "*");
+        updateTemplate(updatedTemplates);
         setSelectedTemplate(Object.assign(Object.assign({}, selectedTemplate), { pages: newPagesArray }));
         setCreatingPage(null);
     };
@@ -96,9 +97,7 @@ const App = () => {
     const onDeleteTemplate = (templateId) => {
         const newTemplatesArray = templates.filter(p => p.id !== templateId);
         setTemplates(newTemplatesArray);
-        parent.postMessage({
-            pluginMessage: { action: "DELETE_TEMPLATE", data: newTemplatesArray }
-        }, "*");
+        deleteTemplate(newTemplatesArray);
         if (selectedTemplate.id == templateId) {
             setSelectedTemplate(newTemplatesArray[0]);
         }
@@ -114,7 +113,7 @@ const App = () => {
         }
         const newTemplatesArray = templates.concat(creatingTemplate);
         setTemplates(newTemplatesArray);
-        parent.postMessage({ pluginMessage: { action: "CREATE_TEMPLATE", data: newTemplatesArray } }, "*");
+        createTemplate(newTemplatesArray);
         setCreatingTemplate(null);
     };
     const createTemplateFromPages = () => {
@@ -138,18 +137,22 @@ const App = () => {
                 React.createElement("div", { className: "headtitle" },
                     React.createElement("span", { className: "section-title", style: { marginBottom: ".5rem" } }, selectedTemplate ? `Pages in ${selectedTemplate.name}` : "Pages"),
                     React.createElement("span", { className: "icon icon--plus icon--button", onClick: openPageInput })),
-                React.createElement("div", { className: "pages" }, selectedTemplate &&
-                    selectedTemplate.pages &&
-                    selectedTemplate.pages.map(page => {
-                        if (creatingPage && creatingPage.id === page.id) {
-                            return (React.createElement(PageInput, { key: page.id, page: creatingPage, onChange: (_, value) => {
-                                    setCreatingPage(Object.assign(Object.assign({}, creatingPage), { name: value }));
-                                }, onDelete: () => { }, onSave: onRenamePage }));
-                        }
-                        return (React.createElement(PageField, { key: page.id, page: page, onTriggerRename: () => {
-                                setCreatingPage(page);
-                            }, onDelete: onDeletePage, onSave: onSavePage }));
-                    })))),
+                React.createElement("div", { className: "pages" },
+                    selectedTemplate &&
+                        selectedTemplate.pages &&
+                        selectedTemplate.pages.map(page => {
+                            if (creatingPage && creatingPage.id === page.id) {
+                                return (React.createElement(PageInput, { key: page.id, page: creatingPage, onChange: (_, value) => {
+                                        setCreatingPage(Object.assign(Object.assign({}, creatingPage), { name: value }));
+                                    }, onDelete: () => { }, onSave: onRenamePage }));
+                            }
+                            return (React.createElement(PageField, { key: page.id, page: page, onTriggerRename: () => {
+                                    setCreatingPage(page);
+                                }, onDelete: onDeletePage, onSave: onSavePage }));
+                        }),
+                    creatingPage && !pageIds.includes(creatingPage.id) ? (React.createElement(PageInput, { page: creatingPage, onChange: (_, value) => {
+                            setCreatingPage(Object.assign(Object.assign({}, creatingPage), { name: value }));
+                        }, onDelete: () => { }, onSave: onSavePage })) : null))),
         React.createElement("div", { className: "footer container" },
             React.createElement("button", { onClick: createTemplateFromPages, className: "button button--secondary" }, "Create template from current document"),
             React.createElement("button", { onClick: () => parent.postMessage({ pluginMessage: { action: "TRIGGER_CHANGES", data: templates } }, "*"), className: "button button--primary" }, "Generate template"))));

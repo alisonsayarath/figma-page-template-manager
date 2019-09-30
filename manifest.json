@@ -2,6 +2,6 @@
   "name": "Page Template Manager",
   "id": "740177660266789812",
   "api": "1.0.0",
-  "main": "src/code.js",
-  "ui": "src/ui.html"
+  "main": "dist/code.js",
+  "ui": "dist/ui.html"
 }

@@ -3,14 +3,19 @@ import { useState, useEffect, useRef } from "react";
 import * as ReactDOM from "react-dom";
 
 import { Pages, TemporaryPageId, PageName, Template } from "./types";
+import {
+  createTemplate,
+  deleteTemplate,
+  updateTemplate
+} from "./services/templates";
 
 import { PageField } from "./components/page-field";
 import { PageInput } from "./components/page-input";
 import { TemplateField } from "./components/template-field";
 import { TemplateInput } from "./components/template-input";
 
-import "./figma.css";
-import "./ui.css";
+import "./styles/figma.css";
+import "./styles/ui.css";
 
 const App = () => {
   const [templates, setTemplates] = useState<Template[]>([]);
@@ -71,10 +76,7 @@ const App = () => {
     );
 
     setTemplates(updatedTemplates);
-    parent.postMessage(
-      { pluginMessage: { action: "CHANGE_TEMPLATE", data: updatedTemplates } },
-      "*"
-    );
+    updateTemplate(updatedTemplates);
     setSelectedTemplate({ ...selectedTemplate, pages: newPagesArray });
   };
 
@@ -98,10 +100,7 @@ const App = () => {
     );
 
     setTemplates(updatedTemplates);
-    parent.postMessage(
-      { pluginMessage: { action: "CHANGE_TEMPLATE", data: updatedTemplates } },
-      "*"
-    );
+    updateTemplate(updatedTemplates);
     setSelectedTemplate({ ...selectedTemplate, pages: newPagesArray });
     setCreatingPage(null);
   };
@@ -124,10 +123,7 @@ const App = () => {
     );
 
     setTemplates(updatedTemplates);
-    parent.postMessage(
-      { pluginMessage: { action: "CHANGE_TEMPLATE", data: updatedTemplates } },
-      "*"
-    );
+    updateTemplate(updatedTemplates);
     setSelectedTemplate({ ...selectedTemplate, pages: newPagesArray });
     setCreatingPage(null);
   };
@@ -137,12 +133,7 @@ const App = () => {
   const onDeleteTemplate = (templateId: string) => {
     const newTemplatesArray = templates.filter(p => p.id !== templateId);
     setTemplates(newTemplatesArray);
-    parent.postMessage(
-      {
-        pluginMessage: { action: "DELETE_TEMPLATE", data: newTemplatesArray }
-      },
-      "*"
-    );
+    deleteTemplate(newTemplatesArray);
 
     if (selectedTemplate.id == templateId) {
       setSelectedTemplate(newTemplatesArray[0]);
@@ -163,10 +154,7 @@ const App = () => {
 
     const newTemplatesArray = templates.concat(creatingTemplate);
     setTemplates(newTemplatesArray);
-    parent.postMessage(
-      { pluginMessage: { action: "CREATE_TEMPLATE", data: newTemplatesArray } },
-      "*"
-    );
+    createTemplate(newTemplatesArray);
     setCreatingTemplate(null);
   };
 
@@ -253,7 +241,7 @@ const App = () => {
                 );
               })}
 
-            {/* {creatingPage && !pageIds.includes(creatingPage.id) ? (
+            {creatingPage && !pageIds.includes(creatingPage.id) ? (
               <PageInput
                 page={creatingPage}
                 onChange={(_: string, value: string) => {
@@ -262,7 +250,7 @@ const App = () => {
                 onDelete={() => {}}
                 onSave={onSavePage}
               />
-            ) : null} */}
+            ) : null}
           </div>
         </div>
       </div>

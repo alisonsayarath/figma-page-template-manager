@@ -1,4 +1,3 @@
-figma.showUI(__html__);
 const doc = figma.root;
 const cs = figma.clientStorage;
 const ui = figma.ui;
