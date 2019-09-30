@@ -1,5 +1,5 @@
 {
-  "main": "./src/code.js",
+  "main": "code.js",
   "dependencies": {
     "@types/react": "^16.9.1",
     "@types/react-dom": "^16.8.5",

@@ -1,5 +1,7 @@
 import { PageName, Message, Pages, Template } from "./types";
 
+figma.showUI(__html__);
+
 const doc = figma.root;
 const cs = figma.clientStorage;
 const ui = figma.ui;
@@ -59,8 +61,7 @@ const triggerChanges = (messageData: Template[]) => {
 // cs.setAsync("templates", undefined);
 
 getTemplates().then(asyncTemplates => {
-  console.log(asyncTemplates);
-  if (asyncTemplates.length) {
+  if (asyncTemplates) {
     const newTemplates = asyncTemplates.map((t, i) => {
       return {
         name: t.name,
