@@ -1,12 +1,11 @@
 const HtmlWebpackInlineSourcePlugin = require("html-webpack-inline-source-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const CleanWebpackPlugin = require("clean-webpack-plugin");
 const path = require("path");
 
 module.exports = (env, argv) => ({
   watch: true,
   mode: argv.mode === "production" ? "production" : "development",
-
-  // This is necessary because Figma's 'eval' works differently than normal eval
   devtool: argv.mode === "production" ? false : "inline-source-map",
 
   entry: {
@@ -35,8 +34,8 @@ module.exports = (env, argv) => ({
     path: path.resolve(__dirname, "dist")
   },
 
-  // Tells Webpack to generate "ui.html" and to inline "ui.ts" into it
   plugins: [
+    new CleanWebpackPlugin(["dist"]),
     new HtmlWebpackPlugin({
       template: "./src/ui.html",
       filename: "ui.html",

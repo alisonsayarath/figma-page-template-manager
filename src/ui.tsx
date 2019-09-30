@@ -19,14 +19,16 @@ import "./styles/ui.css";
 
 const App = () => {
   const [templates, setTemplates] = useState<Template[]>([]);
-  const [selectedTemplate, setSelectedTemplate] = useState<Template>(null);
+  const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(
+    null
+  );
   const [creatingTemplate, setCreatingTemplate] = useState<Template | null>(
     null
   );
-  const [creatingPage, setCreatingPage] = useState(null);
+  const [creatingPage, setCreatingPage] = useState<Template>(null);
 
   onmessage = ({ data }) => {
-    console.log(data.pluginMessage);
+    // console.log(data.pluginMessage);
     setTemplates(data.pluginMessage);
     if (!selectedTemplate && data.pluginMessage) {
       setSelectedTemplate(data.pluginMessage[0]);
@@ -167,6 +169,8 @@ const App = () => {
 
   const pageIds = selectedTemplate && selectedTemplate.pages.map(p => p.id);
 
+  console.log("coucou", pageIds);
+
   return (
     <>
       <div className="container">
@@ -241,7 +245,7 @@ const App = () => {
                 );
               })}
 
-            {creatingPage && !pageIds.includes(creatingPage.id) ? (
+            {/* {creatingPage && !pageIds.includes(creatingPage.id) ? (
               <PageInput
                 page={creatingPage}
                 onChange={(_: string, value: string) => {
@@ -250,7 +254,7 @@ const App = () => {
                 onDelete={() => {}}
                 onSave={onSavePage}
               />
-            ) : null}
+            ) : null} */}
           </div>
         </div>
       </div>

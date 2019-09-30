@@ -1,7 +1,7 @@
 export type TemporaryPageId = string;
 export type PageName = string;
 export type Page = {
-  id?: TemporaryPageId;
+  id: TemporaryPageId;
   name: PageName;
 };
 export type Pages = Page[];
@@ -9,7 +9,7 @@ export type Pages = Page[];
 export type Template = {
   name: string;
   id: string;
-  isDefault: boolean;
+  isDefault?: boolean;
   pages?: Pages;
   isSelected?: boolean;
 };

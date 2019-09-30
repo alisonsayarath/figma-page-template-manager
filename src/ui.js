@@ -14,7 +14,7 @@ const App = () => {
     const [creatingTemplate, setCreatingTemplate] = useState(null);
     const [creatingPage, setCreatingPage] = useState(null);
     onmessage = ({ data }) => {
-        console.log(data.pluginMessage);
+        // console.log(data.pluginMessage);
         setTemplates(data.pluginMessage);
         if (!selectedTemplate && data.pluginMessage) {
             setSelectedTemplate(data.pluginMessage[0]);
@@ -123,6 +123,7 @@ const App = () => {
         // );
     };
     const pageIds = selectedTemplate && selectedTemplate.pages.map(p => p.id);
+    console.log("coucou", pageIds);
     return (React.createElement(React.Fragment, null,
         React.createElement("div", { className: "container" },
             React.createElement("div", { className: "template-container" },
@@ -137,22 +138,18 @@ const App = () => {
                 React.createElement("div", { className: "headtitle" },
                     React.createElement("span", { className: "section-title", style: { marginBottom: ".5rem" } }, selectedTemplate ? `Pages in ${selectedTemplate.name}` : "Pages"),
                     React.createElement("span", { className: "icon icon--plus icon--button", onClick: openPageInput })),
-                React.createElement("div", { className: "pages" },
-                    selectedTemplate &&
-                        selectedTemplate.pages &&
-                        selectedTemplate.pages.map(page => {
-                            if (creatingPage && creatingPage.id === page.id) {
-                                return (React.createElement(PageInput, { key: page.id, page: creatingPage, onChange: (_, value) => {
-                                        setCreatingPage(Object.assign(Object.assign({}, creatingPage), { name: value }));
-                                    }, onDelete: () => { }, onSave: onRenamePage }));
-                            }
-                            return (React.createElement(PageField, { key: page.id, page: page, onTriggerRename: () => {
-                                    setCreatingPage(page);
-                                }, onDelete: onDeletePage, onSave: onSavePage }));
-                        }),
-                    creatingPage && !pageIds.includes(creatingPage.id) ? (React.createElement(PageInput, { page: creatingPage, onChange: (_, value) => {
-                            setCreatingPage(Object.assign(Object.assign({}, creatingPage), { name: value }));
-                        }, onDelete: () => { }, onSave: onSavePage })) : null))),
+                React.createElement("div", { className: "pages" }, selectedTemplate &&
+                    selectedTemplate.pages &&
+                    selectedTemplate.pages.map(page => {
+                        if (creatingPage && creatingPage.id === page.id) {
+                            return (React.createElement(PageInput, { key: page.id, page: creatingPage, onChange: (_, value) => {
+                                    setCreatingPage(Object.assign(Object.assign({}, creatingPage), { name: value }));
+                                }, onDelete: () => { }, onSave: onRenamePage }));
+                        }
+                        return (React.createElement(PageField, { key: page.id, page: page, onTriggerRename: () => {
+                                setCreatingPage(page);
+                            }, onDelete: onDeletePage, onSave: onSavePage }));
+                    })))),
         React.createElement("div", { className: "footer container" },
             React.createElement("button", { onClick: createTemplateFromPages, className: "button button--secondary" }, "Create template from current document"),
             React.createElement("button", { onClick: () => parent.postMessage({ pluginMessage: { action: "TRIGGER_CHANGES", data: templates } }, "*"), className: "button button--primary" }, "Generate template"))));
