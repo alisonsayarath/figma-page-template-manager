@@ -253,7 +253,7 @@ const App = () => {
                 );
               })}
 
-            {creatingPage && !pageIds.includes(creatingPage.id) ? (
+            {/* {creatingPage && !pageIds.includes(creatingPage.id) ? (
               <PageInput
                 page={creatingPage}
                 onChange={(_: string, value: string) => {
@@ -262,7 +262,7 @@ const App = () => {
                 onDelete={() => {}}
                 onSave={onSavePage}
               />
-            ) : null}
+            ) : null} */}
           </div>
         </div>
       </div>

@@ -20,22 +20,19 @@ const TEMPLATES = [
     name: "Premier template",
     id: "1",
     isDefault: false,
-    pages: [{ name: "Bonjour", _temporaryId: "0" }]
+    pages: [{ name: "Bonjour", id: "0" }]
   },
   {
     name: "Deuxième template",
     id: "2",
     isDefault: true,
-    pages: [
-      { name: "Bonjour", _temporaryId: "0" },
-      { name: "Salut ça farte ?", _temporaryId: "1" }
-    ]
+    pages: [{ name: "Bonjour", id: "0" }, { name: "Salut ça farte ?", id: "1" }]
   },
   {
     name: "Troisième template",
     id: "3",
     isDefault: false,
-    pages: [{ name: "KIKOO", _temporaryId: "0" }]
+    pages: [{ name: "KIKOO", id: "0" }]
   }
 ] as Template[];
 
@@ -93,7 +90,7 @@ ui.onmessage = (message: Message) => {
       ui.postMessage(existingPages);
       break;
     case "TRIGGER_CHANGES":
-      triggerChanges(message.data);
+      // triggerChanges(message.data);
       cs.setAsync("pages", templates);
       ui.postMessage(templates);
       figma.closePlugin();
