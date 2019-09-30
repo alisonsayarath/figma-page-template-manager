@@ -1,4 +1,3 @@
-figma.showUI(__html__);
 const doc = figma.root;
 const cs = figma.clientStorage;
 const ui = figma.ui;
@@ -50,7 +49,8 @@ const triggerChanges = (messageData) => {
 };
 // cs.setAsync("templates", undefined);
 getTemplates().then(asyncTemplates => {
-    if (asyncTemplates) {
+    console.log(asyncTemplates);
+    if (asyncTemplates.length) {
         const newTemplates = asyncTemplates.map((t, i) => {
             return {
                 name: t.name,

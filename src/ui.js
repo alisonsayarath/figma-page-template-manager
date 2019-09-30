@@ -5,15 +5,15 @@ import { PageField } from "./components/page-field";
 import { PageInput } from "./components/page-input";
 import { TemplateField } from "./components/template-field";
 import { TemplateInput } from "./components/template-input";
-import "./figma.css";
-import "./ui.css";
+import "./styles/figma.css";
+import "./styles/ui.css";
 const App = () => {
     const [templates, setTemplates] = useState([]);
     const [selectedTemplate, setSelectedTemplate] = useState(null);
     const [creatingTemplate, setCreatingTemplate] = useState(null);
     const [creatingPage, setCreatingPage] = useState(null);
     onmessage = ({ data }) => {
-        console.log(data.pluginMessage);
+        console.log("cc");
         setTemplates(data.pluginMessage);
         if (!selectedTemplate && data.pluginMessage) {
             setSelectedTemplate(data.pluginMessage[0]);
