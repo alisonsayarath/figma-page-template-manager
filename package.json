@@ -1,7 +1,7 @@
 {
-  "main": "code.js",
+  "main": "./src/code.js",
+  "license": "MIT",
   "scripts": {
-    "build": "webpack --mode=production",
     "develop": "tsc --watch"
   },
   "dependencies": {
